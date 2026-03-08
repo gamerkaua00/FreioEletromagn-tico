@@ -3,131 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freio Eletromagnético | TCC</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Freio Eletromagnético | TCC Automação Industrial</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
+    <div id="tech-background"></div>
+
     <nav>
-        <div class="logo">TCC.<span>Foucault</span></div>
-        <ul>
-            <li><a href="#explicacao">Como Funciona</a></li>
-            <li><a href="#demonstracao-sec">Simulação</a></li>
-            <li><a href="#projeto">O Protótipo</a></li>
-            <li><a href="#slides" class="btn-nav">Ver Apresentação</a></li>
+        <div class="logo">TCC<span>.Foucault</span></div>
+        <ul class="nav-links">
+            <li><a href="#simulacao">Simulação 3D</a></li>
+            <li><a href="#teoria">Teoria</a></li>
+            <li><a href="#historico">Apresentações</a></li>
+            <li><a href="#galeria">Protótipo</a></li>
+            <li><button id="btn-modo-apresentacao" class="neon-btn">Modo Apresentação</button></li>
         </ul>
     </nav>
 
-    <section id="hero">
+    <section id="home" class="hero">
         <div class="hero-content">
             <h1>Freio Eletromagnético</h1>
-            <p>Demonstração do uso das Correntes de Foucault em sistemas de frenagem de alta eficiência.</p>
-            <a href="#slides" class="btn-primary">Ver Apresentação</a>
+            <p>Simulação e estudo das Correntes de Foucault aplicadas em sistemas de frenagem sem contato.</p>
+            <a href="#simulacao" class="neon-btn large">Explorar Projeto</a>
         </div>
     </section>
 
-    <section id="explicacao">
-        <h2>Entendendo o Conceito</h2>
-        <div class="grid-cards">
-            <div class="card">
-                <h3>O que são Correntes de Foucault?</h3>
-                <p>São correntes elétricas induzidas no interior de um material condutor quando ele é sujeito a um campo magnético variável.</p>
+    <section id="simulacao" class="glass-panel">
+        <h2 class="section-title">Simulação Interativa 3D</h2>
+        <div class="simulacao-grid">
+            <div class="canvas-container">
+                <div id="three-container"></div>
+                <div id="magnetic-field-overlay"></div>
+            </div>
+            
+            <div class="controls-container">
+                <h3>Painel de Controle</h3>
+                <div class="control-group">
+                    <label for="speed-slider">Velocidade Inicial do Disco</label>
+                    <input type="range" id="speed-slider" min="0" max="100" value="50">
+                </div>
+                
+                <div class="control-group">
+                    <label for="magnet-slider">Intensidade do Campo Magnético</label>
+                    <input type="range" id="magnet-slider" min="0" max="100" value="0">
+                </div>
+
+                <div class="buttons-row">
+                    <button id="btn-toggle-sim" class="neon-btn">Iniciar Motor</button>
+                </div>
+
+                <div class="telemetry">
+                    <h4>Telemetria</h4>
+                    <p>Velocidade Atual: <span id="speed-display">0</span> RPM</p>
+                    <canvas id="speed-chart" width="300" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="teoria" class="glass-panel">
+        <h2 class="section-title">Fundamentação Teórica</h2>
+        <div class="teoria-grid">
+            <div class="teoria-card">
+                <h3>Correntes de Foucault</h3>
+                <p>São correntes elétricas induzidas no interior de um material condutor quando ele é sujeito a um campo magnético variável. Elas circulam em padrões fechados, como redemoinhos.</p>
                 
             </div>
-            <div class="card">
-                <h3>Como Surgem?</h3>
-                <p>Pela Lei de Faraday-Lenz, a variação do fluxo magnético no condutor induz essas correntes, que circulam em padrões fechados (como redemoinhos).</p>
-            </div>
-            <div class="card">
-                <h3>Como geram Frenagem?</h3>
-                <p>As correntes induzidas geram seu próprio campo magnético, que se opõe ao campo magnético original, criando uma força de repulsão que desacelera o movimento.</p>
-            </div>
-            <div class="card">
-                <h3>Aplicações Reais</h3>
-                <p>Utilizado em trens de alta velocidade, montanhas-russas, rolos de dinamômetros e equipamentos de academia, devido à ausência de desgaste por atrito.</p>
+            <div class="teoria-card">
+                <h3>A Lei de Lenz</h3>
+                <p>Define que a direção da corrente induzida será tal que o campo magnético criado por ela se oporá à variação do fluxo magnético que a originou. É isso que gera a força de frenagem repulsiva.</p>
                 
             </div>
-        </div>
-    </section>
-
-    <section id="demonstracao-sec">
-        <h2>Simulação Interativa</h2>
-        <p>Ative o eletroímã para ver a ação das correntes de Foucault sobre o disco em movimento.</p>
-        
-        <div class="simulacao-container">
-            <div class="disco-container">
-                <div id="disco"></div>
-            </div>
-            <div id="ima">Campo Magnético (OFF)</div>
-        </div>
-        
-        <div class="controles">
-            <button id="btn-freio" class="btn-secondary">Ativar Freio Eletromagnético</button>
-        </div>
-    </section>
-
-    <section id="projeto">
-        <h2>O Protótipo do TCC</h2>
-        <div class="projeto-info">
-            <div class="info-texto">
-                <h3>Objetivo</h3>
-                <p>Criar um modelo funcional e didático de um freio eletromagnético, comprovando os princípios físicos do eletromagnetismo e testando sua eficiência de parada sem contato mecânico.</p>
-                
-                <h3>Materiais Utilizados</h3>
-                <ul>
-                    <li>Disco metálico condutor (Alumínio/Cobre)</li>
-                    <li>Motor DC para rotação do disco</li>
-                    <li>Bobinas de cobre (Eletroímã)</li>
-                    <li>Microcontrolador (Arduino) para controle de acionamento</li>
-                    <li>Sensores e módulo relé/ponte H</li>
-                </ul>
+            <div class="teoria-card">
+                <h3>O Protótipo Físico</h3>
+                <p>O projeto utiliza um disco de alumínio rotacionado por um motor DC. O acionamento do eletroímã (bobinas) é controlado via Arduino e um módulo relé, permitindo medir a eficiência da parada sem atrito mecânico.</p>
             </div>
         </div>
     </section>
 
-    <section id="slides" class="fullscreen-slides">
-        <button id="btn-fechar-slides" class="fechar-btn">Sair da Apresentação</button>
-        
-        <div class="slide-container">
-            <div class="slide ativa">
-                <h2>Slide 1 — Introdução</h2>
-                <p>Apresentação do problema do atrito mecânico e a proposta de uma solução baseada em eletromagnetismo.</p>
-            </div>
-            <div class="slide">
-                <h2>Slide 2 — Correntes de Foucault</h2>
-                <p>A descoberta por Léon Foucault em 1851 e os princípios da indução eletromagnética.</p>
-            </div>
-            <div class="slide">
-                <h2>Slide 3 — Funcionamento do Freio Eletromagnético</h2>
-                <p>A interação entre o campo magnético fixo e o disco condutor em movimento.</p>
-            </div>
-            <div class="slide">
-                <h2>Slide 4 — Aplicações na Indústria</h2>
-                <p>Vantagens na automação industrial: zero desgaste mecânico, manutenção reduzida e controle preciso.</p>
-            </div>
-            <div class="slide">
-                <h2>Slide 5 — Demonstração do Projeto</h2>
-                <p>Análise da montagem do protótipo, circuito lógico e resultados da velocidade de frenagem.</p>
-            </div>
-            <div class="slide">
-                <h2>Slide 6 — Conclusão</h2>
-                <p>O freio eletromagnético se mostra uma alternativa viável e eficiente para sistemas que exigem alta durabilidade.</p>
+    <section id="historico" class="glass-panel">
+        <h2 class="section-title">Histórico de Apresentações</h2>
+        <div class="history-container">
+            <ul class="pdf-list">
+                <li>
+                    <span>Apresentação Seminário 1 – Canva – Abril 2026</span>
+                    <button class="view-pdf-btn neon-btn outline" data-pdf="assets/pdfs/seminario-1.pdf">Visualizar</button>
+                </li>
+                <li>
+                    <span>Apresentação Seminário 2 – Canva – Maio 2026</span>
+                    <button class="view-pdf-btn neon-btn outline" data-pdf="assets/pdfs/seminario-2.pdf">Visualizar</button>
+                </li>
+            </ul>
+            <div class="pdf-viewer-container">
+                <iframe id="pdf-frame" src="" frameborder="0"></iframe>
             </div>
         </div>
+    </section>
 
-        <div class="controles-slide">
-            <button id="prev-slide">&larr; Anterior</button>
-            <span id="contador-slide">1 / 6</span>
-            <button id="next-slide">Próximo &rarr;</button>
+    <section id="galeria" class="glass-panel">
+        <h2 class="section-title">Galeria do Protótipo</h2>
+        <div class="gallery-grid">
+            <img src="assets/imgs/montagem.jpg" alt="Montagem do Circuito" class="gallery-img" loading="lazy">
+            <img src="assets/imgs/testes.jpg" alt="Testes com Arduino" class="gallery-img" loading="lazy">
+            <img src="assets/imgs/experimento.jpg" alt="Experimento Finalizado" class="gallery-img" loading="lazy">
         </div>
     </section>
 
     <footer>
-        <p><strong>Projeto de TCC</strong></p>
-        <p>Tema: Freio Eletromagnético</p>
-        <p>Autor: Kauã Mazur dos Reis</p>
+        <p><strong>Projeto de TCC - Automação Industrial</strong></p>
+        <p>Tema: Freio Eletromagnético utilizando Correntes de Foucault</p>
+        <p>Autor: Kauã Mazur dos Reis | IFPR - Campus Campo Largo</p>
     </footer>
 
-    <script src="script.js"></script>
+    <div id="presentation-mode" class="hidden">
+        <button id="btn-close-presentation" class="close-btn">✖ Fechar</button>
+        
+        <div class="slides-container">
+            <div class="slide active">
+                <h2>1. Introdução</h2>
+                <p>O desgaste mecânico em sistemas de frenagem convencionais e a busca por alternativas eficientes e duradouras.</p>
+            </div>
+            <div class="slide">
+                <h2>2. Correntes de Foucault</h2>
+                <p>Descobertas em 1851 por Léon Foucault, representam a base da indução eletromagnética em massas metálicas.</p>
+            </div>
+            <div class="slide">
+                <h2>3. Lei de Lenz</h2>
+                <p>A oposição ao movimento: como o campo magnético induzido atua contra o campo magnético gerador.</p>
+            </div>
+            <div class="slide">
+                <h2>4. Funcionamento do Freio</h2>
+                <p>Interação entre o disco condutor em movimento (alumínio/cobre) e o eletroímã estacionário.</p>
+            </div>
+            <div class="slide">
+                <h2>5. Aplicações Industriais</h2>
+                <p>Dinamômetros, trens magnéticos, montanhas-russas e equipamentos de fitness de alta precisão.</p>
+            </div>
+            <div class="slide">
+                <h2>6. Protótipo do Projeto</h2>
+                <p>Montagem utilizando Arduino, Motor DC, Relé e construção de bobinas eletromagnéticas.</p>
+            </div>
+            <div class="slide">
+                <h2>7. Resultados</h2>
+                <p>Análise do tempo de parada com e sem o acionamento do campo magnético.</p>
+            </div>
+            <div class="slide">
+                <h2>8. Conclusão</h2>
+                <p>A frenagem eletromagnética é viável, não gera desgaste por atrito e permite controle preciso na automação industrial.</p>
+            </div>
+        </div>
+
+        <div class="slide-controls">
+            <button id="prev-slide">◀ Anterior</button>
+            <span id="slide-counter">1 / 8</span>
+            <button id="next-slide">Próximo ▶</button>
+        </div>
+    </div>
+
+    <div id="lightbox" class="hidden">
+        <span class="close-lightbox">✖</span>
+        <img id="lightbox-img" src="" alt="Imagem Ampliada">
+    </div>
+
+    <script src="js/three-scene.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
