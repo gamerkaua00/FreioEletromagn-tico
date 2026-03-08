@@ -1,118 +1,127 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- LÓGICA DA SIMULAÇÃO DO FREIO ---
-    const disco = document.getElementById('disco');
+    /* === 1. INTEGRAÇÃO DA SIMULAÇÃO 3D === */
+    const btnMotor = document.getElementById('btn-motor');
     const btnFreio = document.getElementById('btn-freio');
-    const ima = document.getElementById('ima');
-    
-    let rotacao = 0;
-    let velocidade = 15; // Velocidade inicial (graus por frame)
-    let freioAtivo = false;
-    const velocidadeMaxima = 15;
+    const sliderVel = document.getElementById('slider-vel');
+    const sliderIma = document.getElementById('slider-ima');
+    const rpmDisplay = document.getElementById('rpm-display');
+    const statusDisplay = document.getElementById('status-display');
 
-    function animarDisco() {
-        // Se o freio estiver ativo, aplica fricção (desacelera)
-        if (freioAtivo && velocidade > 0) {
-            velocidade -= 0.1; // Força de frenagem
-            if (velocidade < 0) velocidade = 0;
-        } 
-        // Se o freio estiver solto e não atingiu a vel máx, acelera de volta
-        else if (!freioAtivo && velocidade < velocidadeMaxima) {
-            velocidade += 0.05; 
-        }
-
-        rotacao += velocidade;
-        disco.style.transform = `rotate(${rotacao}deg)`;
-        
-        // Loop contínuo da animação nativa do navegador
-        requestAnimationFrame(animarDisco);
-    }
-
-    // Inicia a animação assim que a página carrega
-    animarDisco();
-
-    // Controle do Botão de Freio
-    btnFreio.addEventListener('click', () => {
-        freioAtivo = !freioAtivo;
-        
-        if (freioAtivo) {
-            btnFreio.innerText = "Desativar Eletroímã";
-            btnFreio.style.backgroundColor = "#ff3366";
-            btnFreio.style.borderColor = "#ff3366";
-            btnFreio.style.color = "#fff";
-            ima.classList.add('ativo');
-            ima.innerText = "Campo Magnético (ON)";
+    btnMotor.addEventListener('click', () => {
+        window.SimFisica.motorLigado = !window.SimFisica.motorLigado;
+        if (window.SimFisica.motorLigado) {
+            btnMotor.textContent = "Desligar Motor";
+            btnMotor.classList.add('outline');
+            statusDisplay.textContent = "Motor em Funcionamento";
+            statusDisplay.style.color = "var(--neon-blue)";
         } else {
-            btnFreio.innerText = "Ativar Freio Eletromagnético";
-            btnFreio.style.backgroundColor = "transparent";
-            btnFreio.style.borderColor = "var(--primary-color)";
-            btnFreio.style.color = "var(--primary-color)";
-            ima.classList.remove('ativo');
-            ima.innerText = "Campo Magnético (OFF)";
+            btnMotor.textContent = "Iniciar Motor";
+            btnMotor.classList.remove('outline');
+            statusDisplay.textContent = "Motor Desligado";
+            statusDisplay.style.color = "var(--text-muted)";
         }
     });
 
+    btnFreio.addEventListener('click', () => {
+        window.SimFisica.freioLigado = !window.SimFisica.freioLigado;
+        if (window.SimFisica.freioLigado) {
+            btnFreio.textContent = "Desativar Freio";
+            btnFreio.style.background = "var(--alert-color)";
+            btnFreio.style.color = "white";
+        } else {
+            btnFreio.textContent = "Ativar Freio";
+            btnFreio.style.background = "transparent";
+            btnFreio.style.color = "var(--alert-color)";
+        }
+    });
 
-    // --- LÓGICA DO SISTEMA DE SLIDES ---
-    const sectionSlides = document.getElementById('slides');
-    const btnAbrirSlides = document.querySelectorAll('a[href="#slides"]');
+    sliderVel.addEventListener('input', (e) => {
+        // Converte escala do slider (0-100) para radianos por frame
+        window.SimFisica.velDesejada = e.target.value / 200; 
+    });
+
+    sliderIma.addEventListener('input', (e) => {
+        // Escala percentual (0.0 a 1.0)
+        window.SimFisica.intensidadeIma = e.target.value / 100;
+    });
+
+    // Atualiza telemetria no HTML
+    setInterval(() => {
+        const rpm = Math.floor(window.SimFisica.velAtual * 1500); // Fator visual para RPM
+        rpmDisplay.textContent = rpm;
+    }, 100);
+
+
+    /* === 2. SISTEMA DE SLIDES === */
+    const modalSlides = document.getElementById('modal-slides');
+    const btnAbrirSlides = document.getElementById('btn-abrir-slides');
     const btnFecharSlides = document.getElementById('btn-fechar-slides');
     const slides = document.querySelectorAll('.slide');
-    const btnPrev = document.getElementById('prev-slide');
-    const btnNext = document.getElementById('next-slide');
-    const contadorSlide = document.getElementById('contador-slide');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const slideCounter = document.getElementById('slide-counter');
     
-    let slideAtual = 0;
+    let currentSlide = 0;
 
-    function atualizarSlide() {
-        slides.forEach((slide, index) => {
-            slide.classList.remove('ativa');
-            if (index === slideAtual) {
-                slide.classList.add('ativa');
-            }
+    function renderSlide() {
+        slides.forEach((s, i) => {
+            s.classList.remove('active');
+            if (i === currentSlide) s.classList.add('active');
         });
-        contadorSlide.innerText = `${slideAtual + 1} / ${slides.length}`;
+        slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
     }
 
-    function proximoSlide() {
-        if (slideAtual < slides.length - 1) {
-            slideAtual++;
-            atualizarSlide();
-        }
-    }
-
-    function slideAnterior() {
-        if (slideAtual > 0) {
-            slideAtual--;
-            atualizarSlide();
-        }
-    }
-
-    // Eventos dos botões de slide
-    btnNext.addEventListener('click', proximoSlide);
-    btnPrev.addEventListener('click', slideAnterior);
-
-    // Abrir apresentação
-    btnAbrirSlides.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            sectionSlides.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Impede rolagem da página por trás
-        });
+    btnAbrirSlides.addEventListener('click', () => {
+        modalSlides.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        currentSlide = 0;
+        renderSlide();
     });
 
-    // Fechar apresentação
     btnFecharSlides.addEventListener('click', () => {
-        sectionSlides.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Devolve a rolagem
+        modalSlides.classList.add('hidden');
+        document.body.style.overflow = 'auto';
     });
 
-    // Navegação por teclado
+    btnNext.addEventListener('click', () => { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } });
+    btnPrev.addEventListener('click', () => { if (currentSlide > 0) { currentSlide--; renderSlide(); } });
+
     document.addEventListener('keydown', (e) => {
-        if (sectionSlides.style.display === 'flex') {
-            if (e.key === 'ArrowRight') proximoSlide();
-            if (e.key === 'ArrowLeft') slideAnterior();
+        if (!modalSlides.classList.contains('hidden')) {
+            if (e.key === 'ArrowRight') { if (currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+            if (e.key === 'ArrowLeft') { if (currentSlide > 0) { currentSlide--; renderSlide(); } }
             if (e.key === 'Escape') btnFecharSlides.click();
         }
     });
+
+
+    /* === 3. VISUALIZADOR DE PDF === */
+    const btnsPdf = document.querySelectorAll('.btn-view-pdf');
+    const iframePdf = document.getElementById('iframe-pdf');
+
+    btnsPdf.forEach(btn => {
+        btn.addEventListener('click', () => {
+            iframePdf.src = btn.getAttribute('data-pdf');
+            btnsPdf.forEach(b => b.classList.add('outline'));
+            btn.classList.remove('outline');
+        });
+    });
+
+
+    /* === 4. GALERIA LIGHTBOX === */
+    const images = document.querySelectorAll('.img-thumb');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeLightbox = document.getElementById('close-lightbox');
+
+    images.forEach(img => {
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightbox.classList.remove('hidden');
+        });
+    });
+
+    closeLightbox.addEventListener('click', () => lightbox.classList.add('hidden'));
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.add('hidden'); });
 });
