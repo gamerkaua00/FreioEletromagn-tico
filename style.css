@@ -1,0 +1,303 @@
+/* Variáveis de Cores (Tema Tech/Cyberpunk) */
+:root {
+    --bg-color: #0d0d12;
+    --surface-color: #1a1a24;
+    --text-color: #e2e2e2;
+    --primary-color: #00f3ff;
+    --secondary-color: #7000ff;
+    --font-main: 'Segoe UI', system-ui, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: var(--font-main);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+/* Tipografia e Navegação */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background-color: rgba(13, 13, 18, 0.95);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+}
+
+/* Botões */
+.btn-primary, .btn-nav, .btn-secondary {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover, .btn-nav:hover, .btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+/* Seções Gerais */
+section {
+    padding: 100px 5%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+/* Hero Section */
+#hero {
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #1a1a24 0%, #0d0d12 100%);
+}
+
+#hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+}
+
+#hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #aaa;
+}
+
+/* Cards de Explicação */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    background: var(--surface-color);
+    padding: 2rem;
+    border-radius: 8px;
+    border-top: 3px solid var(--primary-color);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card h3 {
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.card p {
+    color: #bbb;
+    line-height: 1.6;
+}
+
+/* Simulação */
+#demonstracao-sec {
+    text-align: center;
+    background-color: var(--surface-color);
+}
+
+.simulacao-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    height: 300px;
+}
+
+.disco-container {
+    position: relative;
+}
+
+#disco {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #555, #888, #555, #888, #555);
+    border: 5px solid #333;
+    box-shadow: inset 0 0 20px #000;
+}
+
+#ima {
+    width: 100px;
+    height: 150px;
+    background: #333;
+    border: 2px solid #555;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #888;
+    transition: all 0.5s;
+    transform: translateX(50px);
+}
+
+#ima.ativo {
+    background: rgba(0, 243, 255, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+    transform: translateX(0); /* Aproxima do disco */
+}
+
+/* Sistema de Slides */
+.fullscreen-slides {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 1000;
+    display: none; /* Oculto por padrão, ativado via JS */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.slide-container {
+    width: 80%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.slide {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.slide.ativa {
+    display: block;
+}
+
+.slide h2 {
+    font-size: 3rem;
+}
+
+.slide p {
+    font-size: 1.5rem;
+    color: #ccc;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.controles-slide {
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.controles-slide button {
+    background: var(--surface-color);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 4px;
+}
+
+.controles-slide button:hover {
+    background: var(--primary-color);
+    color: #000;
+}
+
+.fechar-btn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: #ff3366;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: #050508;
+    color: #666;
+    border-top: 1px solid #1a1a24;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #hero h1 { font-size: 2.5rem; }
+    nav ul { display: none; } /* Em um projeto real, adicionar menu hambúrguer */
+    .simulacao-container { flex-direction: column; }
+    #ima { transform: translateY(30px); }
+    #ima.ativo { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
