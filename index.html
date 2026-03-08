@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freio Eletromagnético | TCC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">TCC.<span>Foucault</span></div>
+        <ul>
+            <li><a href="#explicacao">Como Funciona</a></li>
+            <li><a href="#demonstracao-sec">Simulação</a></li>
+            <li><a href="#projeto">O Protótipo</a></li>
+            <li><a href="#slides" class="btn-nav">Ver Apresentação</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Freio Eletromagnético</h1>
+            <p>Demonstração do uso das Correntes de Foucault em sistemas de frenagem de alta eficiência.</p>
+            <a href="#slides" class="btn-primary">Ver Apresentação</a>
+        </div>
+    </section>
+
+    <section id="explicacao">
+        <h2>Entendendo o Conceito</h2>
+        <div class="grid-cards">
+            <div class="card">
+                <h3>O que são Correntes de Foucault?</h3>
+                <p>São correntes elétricas induzidas no interior de um material condutor quando ele é sujeito a um campo magnético variável.</p>
+                
+            </div>
+            <div class="card">
+                <h3>Como Surgem?</h3>
+                <p>Pela Lei de Faraday-Lenz, a variação do fluxo magnético no condutor induz essas correntes, que circulam em padrões fechados (como redemoinhos).</p>
+            </div>
+            <div class="card">
+                <h3>Como geram Frenagem?</h3>
+                <p>As correntes induzidas geram seu próprio campo magnético, que se opõe ao campo magnético original, criando uma força de repulsão que desacelera o movimento.</p>
+            </div>
+            <div class="card">
+                <h3>Aplicações Reais</h3>
+                <p>Utilizado em trens de alta velocidade, montanhas-russas, rolos de dinamômetros e equipamentos de academia, devido à ausência de desgaste por atrito.</p>
+                
+            </div>
+        </div>
+    </section>
+
+    <section id="demonstracao-sec">
+        <h2>Simulação Interativa</h2>
+        <p>Ative o eletroímã para ver a ação das correntes de Foucault sobre o disco em movimento.</p>
+        
+        <div class="simulacao-container">
+            <div class="disco-container">
+                <div id="disco"></div>
+            </div>
+            <div id="ima">Campo Magnético (OFF)</div>
+        </div>
+        
+        <div class="controles">
+            <button id="btn-freio" class="btn-secondary">Ativar Freio Eletromagnético</button>
+        </div>
+    </section>
+
+    <section id="projeto">
+        <h2>O Protótipo do TCC</h2>
+        <div class="projeto-info">
+            <div class="info-texto">
+                <h3>Objetivo</h3>
+                <p>Criar um modelo funcional e didático de um freio eletromagnético, comprovando os princípios físicos do eletromagnetismo e testando sua eficiência de parada sem contato mecânico.</p>
+                
+                <h3>Materiais Utilizados</h3>
+                <ul>
+                    <li>Disco metálico condutor (Alumínio/Cobre)</li>
+                    <li>Motor DC para rotação do disco</li>
+                    <li>Bobinas de cobre (Eletroímã)</li>
+                    <li>Microcontrolador (Arduino) para controle de acionamento</li>
+                    <li>Sensores e módulo relé/ponte H</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="slides" class="fullscreen-slides">
+        <button id="btn-fechar-slides" class="fechar-btn">Sair da Apresentação</button>
+        
+        <div class="slide-container">
+            <div class="slide ativa">
+                <h2>Slide 1 — Introdução</h2>
+                <p>Apresentação do problema do atrito mecânico e a proposta de uma solução baseada em eletromagnetismo.</p>
+            </div>
+            <div class="slide">
+                <h2>Slide 2 — Correntes de Foucault</h2>
+                <p>A descoberta por Léon Foucault em 1851 e os princípios da indução eletromagnética.</p>
+            </div>
+            <div class="slide">
+                <h2>Slide 3 — Funcionamento do Freio Eletromagnético</h2>
+                <p>A interação entre o campo magnético fixo e o disco condutor em movimento.</p>
+            </div>
+            <div class="slide">
+                <h2>Slide 4 — Aplicações na Indústria</h2>
+                <p>Vantagens na automação industrial: zero desgaste mecânico, manutenção reduzida e controle preciso.</p>
+            </div>
+            <div class="slide">
+                <h2>Slide 5 — Demonstração do Projeto</h2>
+                <p>Análise da montagem do protótipo, circuito lógico e resultados da velocidade de frenagem.</p>
+            </div>
+            <div class="slide">
+                <h2>Slide 6 — Conclusão</h2>
+                <p>O freio eletromagnético se mostra uma alternativa viável e eficiente para sistemas que exigem alta durabilidade.</p>
+            </div>
+        </div>
+
+        <div class="controles-slide">
+            <button id="prev-slide">&larr; Anterior</button>
+            <span id="contador-slide">1 / 6</span>
+            <button id="next-slide">Próximo &rarr;</button>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong>Projeto de TCC</strong></p>
+        <p>Tema: Freio Eletromagnético</p>
+        <p>Autor: Kauã Mazur dos Reis</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
