@@ -3,111 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freio Eletromagnético | TCC Automação Industrial</title>
+    <title>Freio Eletromagnético | ESP32</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <div id="tech-background"></div>
-
     <nav>
         <div class="logo">TCC<span>.Foucault</span></div>
         <ul class="nav-links">
             <li><a href="#simulacao">Simulação 3D</a></li>
-            <li><a href="#teoria">Teoria</a></li>
-            <li><a href="#historico">Apresentações</a></li>
-            <li><a href="#galeria">Protótipo</a></li>
-            <li><button id="btn-modo-apresentacao" class="neon-btn">Modo Apresentação</button></li>
+            <li><a href="#apresentacoes">Apresentações</a></li>
+            <li><a href="#eletronica">Projeto ESP32</a></li>
+            <li><a href="#galeria">Galeria</a></li>
+            <li><button id="btn-abrir-slides" class="neon-btn outline">Modo Apresentação</button></li>
         </ul>
     </nav>
 
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Freio Eletromagnético</h1>
-            <p>Simulação e estudo das Correntes de Foucault aplicadas em sistemas de frenagem sem contato.</p>
-            <a href="#simulacao" class="neon-btn large">Explorar Projeto</a>
+            <p>Estudo e demonstração das Correntes de Foucault aplicadas à frenagem de um motor trifásico.</p>
+            <a href="#simulacao" class="neon-btn">Explorar Projeto</a>
         </div>
     </section>
 
-    <section id="simulacao" class="glass-panel">
+    <section id="simulacao" class="glass-section">
         <h2 class="section-title">Simulação Interativa 3D</h2>
-        <div class="simulacao-grid">
-            <div class="canvas-container">
-                <div id="three-container"></div>
-                <div id="magnetic-field-overlay"></div>
+        <div class="sim-container">
+            <div class="canvas-wrapper">
+                <div id="canvas-3d"></div>
             </div>
             
-            <div class="controls-container">
+            <div class="sim-controls">
                 <h3>Painel de Controle</h3>
+                <p class="sim-desc">Observe a interação entre o campo magnético e o disco acoplado ao eixo do motor trifásico.</p>
+                
                 <div class="control-group">
-                    <label for="speed-slider">Velocidade Inicial do Disco</label>
-                    <input type="range" id="speed-slider" min="0" max="100" value="50">
+                    <label for="slider-vel">Velocidade Inicial do Motor (RPM)</label>
+                    <input type="range" id="slider-vel" min="0" max="100" value="50">
                 </div>
                 
                 <div class="control-group">
-                    <label for="magnet-slider">Intensidade do Campo Magnético</label>
-                    <input type="range" id="magnet-slider" min="0" max="100" value="0">
+                    <label for="slider-ima">Intensidade do Campo Magnético (%)</label>
+                    <input type="range" id="slider-ima" min="0" max="100" value="0">
                 </div>
 
-                <div class="buttons-row">
-                    <button id="btn-toggle-sim" class="neon-btn">Iniciar Motor</button>
+                <div class="action-buttons">
+                    <button id="btn-motor" class="neon-btn">Iniciar Motor</button>
+                    <button id="btn-freio" class="neon-btn alert">Ativar Freio</button>
                 </div>
-
+                
                 <div class="telemetry">
-                    <h4>Telemetria</h4>
-                    <p>Velocidade Atual: <span id="speed-display">0</span> RPM</p>
-                    <canvas id="speed-chart" width="300" height="100"></canvas>
+                    <p>Status: <span id="status-display" class="status-on">Aguardando</span></p>
+                    <p>Velocidade Eixo: <span id="rpm-display">0</span> RPM</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="teoria" class="glass-panel">
-        <h2 class="section-title">Fundamentação Teórica</h2>
-        <div class="teoria-grid">
-            <div class="teoria-card">
-                <h3>Correntes de Foucault</h3>
-                <p>São correntes elétricas induzidas no interior de um material condutor quando ele é sujeito a um campo magnético variável. Elas circulam em padrões fechados, como redemoinhos.</p>
+    <section id="eletronica" class="glass-section">
+        <h2 class="section-title">Arquitetura Eletrônica</h2>
+        <div class="eletronica-grid">
+            <div class="eletronica-texto">
+                <h3>Controle com ESP32</h3>
+                <p>O coração do sistema eletrônico é o microcontrolador ESP32. Diferente de plataformas mais simples, o ESP32 oferece processamento dual-core e conectividade nativa, ideal para aplicações industriais IoT.</p>
                 
+                <ul class="tech-list">
+                    <li><strong>Aquisição de Dados:</strong> O ESP32 lê os pulsos de um sensor de efeito Hall acoplado ao eixo, calculando a rotação (RPM) em tempo real via interrupções de hardware.</li>
+                    <li><strong>Acionamento do Freio:</strong> O microcontrolador envia um sinal PWM para um módulo de potência (ponte H ou relé de estado sólido), que energiza as bobinas do eletroímã.</li>
+                    <li><strong>Vantagem:</strong> O sinal PWM permite variar a intensidade da força magnética, oferecendo uma frenagem suave e controlada.</li>
+                </ul>
             </div>
-            <div class="teoria-card">
-                <h3>A Lei de Lenz</h3>
-                <p>Define que a direção da corrente induzida será tal que o campo magnético criado por ela se oporá à variação do fluxo magnético que a originou. É isso que gera a força de frenagem repulsiva.</p>
-                
-            </div>
-            <div class="teoria-card">
-                <h3>O Protótipo Físico</h3>
-                <p>O projeto utiliza um disco de alumínio rotacionado por um motor DC. O acionamento do eletroímã (bobinas) é controlado via Arduino e um módulo relé, permitindo medir a eficiência da parada sem atrito mecânico.</p>
+            <div class="eletronica-diagrama">
+                <div class="diagrama-box">
+                    <h4>Diagrama de Blocos</h4>
+                    <p>Rede Trifásica ➔ Contatora ➔ Motor Trifásico</p>
+                    <p>Sensor Hall ➔ <strong>ESP32</strong> ➔ Módulo Potência ➔ Eletroímã</p>
+                    
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="historico" class="glass-panel">
+    <section id="apresentacoes" class="glass-section">
         <h2 class="section-title">Histórico de Apresentações</h2>
-        <div class="history-container">
-            <ul class="pdf-list">
-                <li>
-                    <span>Apresentação Seminário 1 – Canva – Abril 2026</span>
-                    <button class="view-pdf-btn neon-btn outline" data-pdf="assets/pdfs/seminario-1.pdf">Visualizar</button>
-                </li>
-                <li>
-                    <span>Apresentação Seminário 2 – Canva – Maio 2026</span>
-                    <button class="view-pdf-btn neon-btn outline" data-pdf="assets/pdfs/seminario-2.pdf">Visualizar</button>
-                </li>
-            </ul>
-            <div class="pdf-viewer-container">
-                <iframe id="pdf-frame" src="" frameborder="0"></iframe>
+        <div class="history-grid">
+            <div class="pdf-list">
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <h4>Defesa do Pré-Projeto</h4>
+                        <span>Outubro 2025</span>
+                    </div>
+                    <button class="neon-btn outline btn-view-pdf" data-pdf="assets/pdfs/apresentacao-1.pdf">Visualizar</button>
+                </div>
+                <div class="pdf-item">
+                    <div class="pdf-info">
+                        <h4>Apresentação Seminário</h4>
+                        <span>Março 2026</span>
+                    </div>
+                    <button class="neon-btn outline btn-view-pdf" data-pdf="assets/pdfs/apresentacao-2.pdf">Visualizar</button>
+                </div>
+            </div>
+            <div class="pdf-viewer">
+                <iframe id="iframe-pdf" src="" frameborder="0"></iframe>
             </div>
         </div>
     </section>
 
-    <section id="galeria" class="glass-panel">
+    <section id="galeria" class="glass-section">
         <h2 class="section-title">Galeria do Protótipo</h2>
-        <div class="gallery-grid">
-            <img src="assets/imgs/montagem.jpg" alt="Montagem do Circuito" class="gallery-img" loading="lazy">
-            <img src="assets/imgs/testes.jpg" alt="Testes com Arduino" class="gallery-img" loading="lazy">
-            <img src="assets/imgs/experimento.jpg" alt="Experimento Finalizado" class="gallery-img" loading="lazy">
+        <div class="gallery-container">
+            <img src="assets/images/montagem.jpg" alt="Montagem do Circuito ESP32" class="img-thumb">
+            <img src="assets/images/prototipo.jpg" alt="Protótipo do Freio" class="img-thumb">
+            <img src="assets/images/testes.jpg" alt="Testes de Frenagem" class="img-thumb">
         </div>
     </section>
 
@@ -117,57 +126,59 @@
         <p>Autor: Kauã Mazur dos Reis | IFPR - Campus Campo Largo</p>
     </footer>
 
-    <div id="presentation-mode" class="hidden">
-        <button id="btn-close-presentation" class="close-btn">✖ Fechar</button>
-        
-        <div class="slides-container">
+    <div id="modal-slides" class="hidden">
+        <button id="btn-fechar-slides" class="btn-close">✖ Fechar</button>
+        <div class="slides-wrapper">
             <div class="slide active">
                 <h2>1. Introdução</h2>
-                <p>O desgaste mecânico em sistemas de frenagem convencionais e a busca por alternativas eficientes e duradouras.</p>
+                <p>O desafio do desgaste por atrito mecânico na indústria e a necessidade de frenagem sem contato em motores de alta potência.</p>
             </div>
             <div class="slide">
                 <h2>2. Correntes de Foucault</h2>
-                <p>Descobertas em 1851 por Léon Foucault, representam a base da indução eletromagnética em massas metálicas.</p>
+                <p>Como campos magnéticos variáveis induzem correntes circulares no interior de massas metálicas condutoras.</p>
+                
+
+[Image of Eddy currents diagram]
+
             </div>
             <div class="slide">
                 <h2>3. Lei de Lenz</h2>
-                <p>A oposição ao movimento: como o campo magnético induzido atua contra o campo magnético gerador.</p>
+                <p>O princípio da oposição: o campo magnético gerado pelas correntes induzidas atua sempre contra o movimento que as originou.</p>
             </div>
             <div class="slide">
                 <h2>4. Funcionamento do Freio</h2>
-                <p>Interação entre o disco condutor em movimento (alumínio/cobre) e o eletroímã estacionário.</p>
+                <p>A interação repulsiva entre o disco metálico acoplado ao motor e as bobinas estacionárias magnetizadas.</p>
             </div>
             <div class="slide">
-                <h2>5. Aplicações Industriais</h2>
-                <p>Dinamômetros, trens magnéticos, montanhas-russas e equipamentos de fitness de alta precisão.</p>
+                <h2>5. Aplicação em Motores Trifásicos</h2>
+                <p>Integração segura em sistemas de alta inércia, reduzindo o tempo de parada sem aquecimento excessivo dos componentes de tração.</p>
             </div>
             <div class="slide">
-                <h2>6. Protótipo do Projeto</h2>
-                <p>Montagem utilizando Arduino, Motor DC, Relé e construção de bobinas eletromagnéticas.</p>
+                <h2>6. Protótipo com ESP32</h2>
+                <p>Uso do ESP32 para controle inteligente, leitura via interrupções de hardware e modulação PWM para as bobinas.</p>
             </div>
             <div class="slide">
                 <h2>7. Resultados</h2>
-                <p>Análise do tempo de parada com e sem o acionamento do campo magnético.</p>
+                <p>Comparativo da curva de desaceleração natural versus a desaceleração controlada pelo freio eletromagnético.</p>
             </div>
             <div class="slide">
                 <h2>8. Conclusão</h2>
-                <p>A frenagem eletromagnética é viável, não gera desgaste por atrito e permite controle preciso na automação industrial.</p>
+                <p>Validação da eficiência do eletromagnetismo como solução de alta durabilidade e precisão para a automação industrial.</p>
             </div>
         </div>
-
         <div class="slide-controls">
-            <button id="prev-slide">◀ Anterior</button>
+            <button id="btn-prev">◀</button>
             <span id="slide-counter">1 / 8</span>
-            <button id="next-slide">Próximo ▶</button>
+            <button id="btn-next">▶</button>
         </div>
     </div>
 
     <div id="lightbox" class="hidden">
-        <span class="close-lightbox">✖</span>
-        <img id="lightbox-img" src="" alt="Imagem Ampliada">
+        <span id="close-lightbox">✖</span>
+        <img id="lightbox-img" src="" alt="Ampliada">
     </div>
 
-    <script src="js/three-scene.js"></script>
+    <script src="js/motor3d.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
